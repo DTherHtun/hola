@@ -36,7 +36,7 @@ func main() {
 	fs := http.FileServer(statikFS)
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	tmpl := template.Must(template.ParseFiles("/go/bin/index.html"))
+	tmpl := template.Must(template.ParseFiles("index.html"))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		data := InfoPageData{
 			PageTitle: "Welcome! Hola",
@@ -51,6 +51,7 @@ func main() {
 			},
 		}
 		tmpl.Execute(w, data)
+		log.Printf("--> %s %s 200", r.Method, r.URL.Path)
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
